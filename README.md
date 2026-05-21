@@ -53,6 +53,8 @@ GitHub Actions cron
 
 ## Setup
 
+→ **Paste-ready first-run guide: [FIRST_RUN.md](./FIRST_RUN.md)**
+
 ```sh
 # 1. Install
 npm install
