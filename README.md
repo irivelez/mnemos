@@ -87,12 +87,12 @@ npm run ingest                # full pipeline
 All commands print a summary to stdout. Run from the repo root.
 
 ```sh
+npm run feed -- verify                             # pre-flight env + db + embed + roundtrip
 npm run feed -- search "claude code subagents"     # semantic search
-npm run feed -- trending --hours 24 --limit 20     # last 24h by engagement
-npm run feed -- trending -t trusted,enterprise     # tier-filtered
-npm run feed -- novel --limit 10                   # today vs last 7d
-npm run feed -- correlate "open weights"           # same topic, all sources
-npm run feed -- angles --limit 8                   # newsletter angle suggestions
+npm run feed -- trending --hours 24 -t trusted,enterprise
+npm run feed -- novel                              # today vs last 7 days
+npm run feed -- correlate "open weights"           # same topic across X/HN/RSS/Reddit
+npm run feed -- angles                             # newsletter angle candidates
 ```
 
 For a global `feed` binary, add to `~/.zshrc`:

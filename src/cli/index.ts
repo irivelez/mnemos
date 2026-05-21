@@ -6,6 +6,7 @@ import { trending } from '../retrieval/trending.js';
 import { novelOfToday } from '../retrieval/novelty.js';
 import { correlateAcrossSources } from '../retrieval/correlate.js';
 import { suggestAngles } from '../retrieval/angles.js';
+import { verifySetup, printChecks } from './verify.js';
 
 const program = new Command();
 
@@ -13,6 +14,16 @@ program
   .name('feed')
   .description('mnemos — memory for content. Ingest + retrieve across X, HN, RSS, Reddit, search.')
   .version('0.1.0');
+
+program
+  .command('verify')
+  .description('Pre-flight check: env + Supabase connection + tables + RPC + embeddings + roundtrip.')
+  .action(async () => {
+    console.log('\nmnemos verify\n');
+    const checks = await verifySetup();
+    const ok = printChecks(checks);
+    process.exit(ok ? 0 : 1);
+  });
 
 program
   .command('ingest')

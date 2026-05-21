@@ -51,9 +51,12 @@ This prints two SQL blocks. Open https://supabase.com/dashboard/project/_/sql/ne
 
 ```sh
 npm install
-npm run typecheck    # must be silent
-npm run smoke        # must report "28 passed · 0 failed"
+npm run typecheck       # must be silent
+npm run smoke           # "28 passed · 0 failed"
+npm run feed -- verify  # checks env + db + pgvector + embedding + roundtrip
 ```
+
+`feed verify` is the gate before first ingest. If anything fails, it tells you exactly which migration is missing or which env var is wrong. Don't run ingest until this is all green.
 
 ## 5 · first ingest
 
