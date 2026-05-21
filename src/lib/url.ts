@@ -22,7 +22,9 @@ export function canonicalizeUrl(raw: string | null | undefined): string | null {
     if (u.pathname.length > 1 && u.pathname.endsWith('/')) {
       u.pathname = u.pathname.replace(/\/+$/, '');
     }
-    return u.toString();
+    let out = u.toString();
+    if (u.pathname === '/' && !u.search) out = out.replace(/\/$/, '');
+    return out;
   } catch {
     return s;
   }

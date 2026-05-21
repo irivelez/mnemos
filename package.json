@@ -14,6 +14,7 @@
     "search": "tsx src/cli/index.ts search",
     "trending": "tsx src/cli/index.ts trending",
     "db:migrate": "tsx scripts/migrate.ts",
+    "smoke": "tsx scripts/smoke.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
