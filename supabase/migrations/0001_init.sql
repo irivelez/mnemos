@@ -29,7 +29,7 @@ create table if not exists articles (
   signal_weight     real default 1.0,
   hot               boolean default false,
 
-  embedding         vector(1536),            -- text-embedding-3-small
+  embedding         vector(384),             -- all-MiniLM-L6-v2 (local, @xenova/transformers)
 
   raw_json          jsonb
 );

@@ -5,28 +5,12 @@ Paste-ready commands from a clean clone to a working `feed search` query. Total 
 ## 0 · prerequisites
 
 Have these ready before you start:
-- A GitHub account with permission to create `irivelez/mnemos`
 - A Supabase account (free tier is enough)
-- An OpenAI API key (https://platform.openai.com/api-keys)
 - Existing `BIRD_AUTH_TOKEN`, `BIRD_CT0`, `BRAVE_API_KEY` from `content-engine/.env`
 
-## 1 · push to github
+Embeddings run locally via `@xenova/transformers` (no API key, ~25 MB model downloaded on first ingest). The GitHub repo already exists at https://github.com/irivelez/mnemos.
 
-Create the empty repo via web (CLI auth scope blocks this for now):
-
-1. Open https://github.com/new
-2. Owner: `irivelez` · Name: `mnemos` · Public · do NOT init with README
-
-Then push from local:
-
-```sh
-cd /Users/irina/AI-driven-OS/memory2
-git push -u origin main
-```
-
-(The remote `origin = https://github.com/irivelez/mnemos.git` is already configured.)
-
-## 2 · provision supabase
+## 1 · provision supabase
 
 ```
 1. https://supabase.com/dashboard → New project
@@ -37,7 +21,7 @@ git push -u origin main
      service_role secret key  → SUPABASE_SERVICE_ROLE_KEY
 ```
 
-## 3 · configure .env
+## 2 · configure .env
 
 ```sh
 cd /Users/irina/AI-driven-OS/memory2
@@ -47,8 +31,7 @@ cp .env.example .env
 Fill in `.env`:
 ```
 SUPABASE_URL=https://<your-project>.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=<service role from step 2>
-OPENAI_API_KEY=<your openai key>
+SUPABASE_SERVICE_ROLE_KEY=<service role from step 1>
 ```
 
 Lift the remaining three from existing content-engine:
@@ -56,7 +39,7 @@ Lift the remaining three from existing content-engine:
 grep -E '^(BIRD_|BRAVE_)' /Users/irina/AI-driven-OS/content-engine/.env >> .env
 ```
 
-## 4 · run migrations
+## 3 · run migrations
 
 ```sh
 npm run db:migrate
@@ -64,7 +47,7 @@ npm run db:migrate
 
 This prints two SQL blocks. Open https://supabase.com/dashboard/project/_/sql/new , paste `0001_init.sql` block, click **Run**. Then do the same for `0002_search_fn.sql`. Both should report "Success. No rows returned."
 
-## 5 · smoke-test the code
+## 4 · smoke-test the code
 
 ```sh
 npm install
@@ -72,7 +55,7 @@ npm run typecheck    # must be silent
 npm run smoke        # must report "28 passed · 0 failed"
 ```
 
-## 6 · first ingest
+## 5 · first ingest
 
 Dry run validates fetchers without touching the DB:
 
@@ -99,7 +82,8 @@ mnemos ingest — 2026-05-21T03:14:00.000Z
   [reddit] subs (5)...
   [filter] 487 recent / 612 total (last 3d)
   [dedupe] 472 local-unique, 472 new vs DB
-  [embed] 472 items via text-embedding-3-small...
+  [embed] loading Xenova/all-MiniLM-L6-v2 (first run downloads ~25 MB)...
+  [embed] 472 items embedded locally...
 
 ──────── ingest summary ────────
 {
@@ -113,7 +97,7 @@ mnemos ingest — 2026-05-21T03:14:00.000Z
 }
 ```
 
-## 7 · query the brain
+## 6 · query the brain
 
 ```sh
 npm run feed -- search "claude code subagents" -n 10
@@ -124,7 +108,7 @@ npm run feed -- correlate "open weights"
 npm run feed -- angles --limit 8
 ```
 
-## 8 · daily cron (optional)
+## 7 · daily cron (optional)
 
 The cron workflow is staged at [`cron/ingest.yml.example`](./cron/ingest.yml.example). To activate it:
 
@@ -145,7 +129,6 @@ Then add these six repository secrets at `https://github.com/irivelez/mnemos/set
 
 - `SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
-- `OPENAI_API_KEY`
 - `BIRD_AUTH_TOKEN`
 - `BIRD_CT0`
 - `BRAVE_API_KEY`
@@ -160,7 +143,7 @@ The workflow runs daily at 15:00 UTC (8 AM PT) and pushes everything new to Supa
 
 **`extension "vector" does not exist`** — pgvector isn't enabled on your Supabase project. Open the Supabase dashboard → Database → Extensions, search "vector", enable.
 
-**`[embed] batch failed: 401`** — OpenAI key wrong or out of credit.
+**`[embed] batch failed: ...`** — first run downloads the MiniLM model (~25 MB). Needs internet on the first invocation. After that it's offline.
 
 **`[reddit] r/X: HTTP 429`** — Brave Search rate limit. Free tier is 2000 queries/month. Will reset.
 

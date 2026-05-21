@@ -1,4 +1,4 @@
-create or replace function mnemos_search(query_embedding vector(1536), match_count int default 10)
+create or replace function mnemos_search(query_embedding vector(384), match_count int default 10)
 returns table (
   id uuid,
   title text,
