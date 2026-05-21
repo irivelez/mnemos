@@ -126,7 +126,22 @@ npm run feed -- angles --limit 8
 
 ## 8 · daily cron (optional)
 
-In `https://github.com/irivelez/mnemos/settings/secrets/actions` add these six repository secrets (same values as `.env`):
+The cron workflow is staged at [`cron/ingest.yml.example`](./cron/ingest.yml.example). To activate it:
+
+```sh
+mkdir -p .github/workflows
+cp cron/ingest.yml.example .github/workflows/ingest.yml
+git add .github/workflows/ingest.yml
+git commit -m "ops: enable daily ingest cron"
+git push
+```
+
+If the push fails with `refusing to allow an OAuth App to create or update workflow`, your `gh` token lacks `workflow` scope. Fix:
+- Open https://github.com/settings/tokens
+- Edit the active token (or create a new classic token with `repo` + `workflow` scopes)
+- Re-run the push
+
+Then add these six repository secrets at `https://github.com/irivelez/mnemos/settings/secrets/actions`:
 
 - `SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
@@ -135,7 +150,7 @@ In `https://github.com/irivelez/mnemos/settings/secrets/actions` add these six r
 - `BIRD_CT0`
 - `BRAVE_API_KEY`
 
-The workflow at `.github/workflows/ingest.yml` runs daily at 15:00 UTC (8 AM PT) and pushes everything new to Supabase.
+The workflow runs daily at 15:00 UTC (8 AM PT) and pushes everything new to Supabase.
 
 ## troubleshooting
 
