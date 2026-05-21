@@ -1,0 +1,222 @@
+{
+  "trustedVoices": [
+    "AnthropicAI",
+    "ClaudeDevs",
+    "alexalbert__",
+    "OpenAI",
+    "sama",
+    "GoogleAI",
+    "GoogleDeepMind",
+    "LangChain",
+    "crewAIInc",
+    "cursor_ai",
+    "karpathy",
+    "bcherny",
+    "gregisenberg",
+    "joaomdmoura",
+    "alliekmiller",
+    "swyx",
+    "simonw",
+    "hwchase17",
+    "jxnlco",
+    "mckaywrigley",
+    "AravSrinivas",
+    "kloss_xyz",
+    "ryancarson",
+    "ronycoder",
+    "DarioAmodei",
+    "DanielaAmodei",
+    "ylecun",
+    "AndrewYNg",
+    "DrJimFan",
+    "EMostaque",
+    "steipete",
+    "nikitabier"
+  ],
+  "contentCreators": [
+    "exploraX_",
+    "eng_khairallah1",
+    "rohit4verse",
+    "TimJayas",
+    "rubenhassid",
+    "GanimCorey",
+    "aiedge_",
+    "startupideaspod",
+    "hooeem",
+    "bloggersarvesh",
+    "cyrilXBT",
+    "rileybrown_ai",
+    "zodchiii",
+    "systematicls",
+    "rowancheung",
+    "therundownai",
+    "mattshumer_"
+  ],
+  "contentQueries": [
+    "built this with Claude Code",
+    "built this with AI in hours",
+    "AI replaced my workflow results",
+    "I automated my business with AI",
+    "AI side hustle making money",
+    "AI workflow before after results",
+    "non-technical founder built with AI",
+    "how I automate with Claude Code",
+    "I built my startup with AI agents",
+    "Claude Code replaced my workflow"
+  ],
+  "broadSearchQualityFilter": {
+    "minViews": 5000,
+    "minLikes": 100,
+    "minFollowers": 10000,
+    "bioKeywords": [
+      "AI",
+      "ML",
+      "machine learning",
+      "deep learning",
+      "LLM",
+      "agent",
+      "founder",
+      "researcher",
+      "engineer",
+      "professor",
+      "PhD",
+      "CTO",
+      "CEO",
+      "VP"
+    ]
+  },
+  "queries": [
+    "Claude Code tutorial",
+    "Claude Code commands tricks",
+    "Claude Code tips",
+    "Claude Code workflow",
+    "Claude subagents",
+    "Claude skills build",
+    "Claude agent SDK",
+    "Agent Skills Claude",
+    "MCP server Claude",
+    "autonomous AI agent",
+    "multi-agent system Claude",
+    "agentic workflow build",
+    "production grade AI agent",
+    "step-by-step agentic guide",
+    "build SaaS with Claude Code",
+    "Claude Code free alternative",
+    "npx skills Claude",
+    "site:bloomberglinea.com AI inteligencia artificial tecnología"
+  ],
+  "braveSourceOverrides": {
+    "bloomberglinea.com": {
+      "name": "Bloomberg Línea",
+      "signalWeight": 1.5,
+      "tier": "latam"
+    }
+  },
+  "topicFilters": [
+    "AI tools",
+    "prompts",
+    "automation",
+    "no-code",
+    "productivity",
+    "Claude",
+    "ChatGPT",
+    "workflow",
+    "tutorial",
+    "how-to",
+    "agents"
+  ],
+  "hotThreshold": {
+    "likes": 10000,
+    "label": "🔥 HOT",
+    "note": "10K likes ≈ 1M+ views based on viral post ratios"
+  },
+  "maxResults": 20,
+  "subreddits": [
+    "ChatGPT",
+    "artificial",
+    "ClaudeAI",
+    "ClaudeCode",
+    "AI_Agents"
+  ],
+  "rssFeeds": [
+    {
+      "name": "Simon Willison",
+      "url": "https://simonwillison.net/atom/everything/"
+    },
+    {
+      "name": "The Verge AI",
+      "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
+    },
+    {
+      "name": "MIT Tech Review AI",
+      "url": "https://www.technologyreview.com/feed/"
+    },
+    {
+      "name": "Anthropic Blog",
+      "url": "https://www.anthropic.com/rss.xml"
+    },
+    {
+      "name": "OpenAI Blog",
+      "url": "https://openai.com/blog/rss.xml"
+    },
+    {
+      "name": "Lenny Rachitsky",
+      "url": "https://www.lennysnewsletter.com/feed"
+    },
+    {
+      "name": "Ben Thompson (Stratechery)",
+      "url": "https://stratechery.com/feed/",
+      "signalWeight": 1.3,
+      "tier": "enterprise"
+    },
+    {
+      "name": "McKinsey Insights",
+      "url": "https://www.mckinsey.com/insights/rss.aspx",
+      "signalWeight": 1.5,
+      "tier": "enterprise"
+    },
+    {
+      "name": "MIT Sloan Management Review",
+      "url": "https://sloanreview.mit.edu/feed/",
+      "signalWeight": 1.3,
+      "tier": "enterprise"
+    },
+    {
+      "name": "Benedict Evans",
+      "url": "https://www.ben-evans.com/benedictevans?format=rss",
+      "signalWeight": 1.2,
+      "tier": "enterprise"
+    },
+    {
+      "name": "Rest of World",
+      "url": "https://restofworld.org/feed/",
+      "signalWeight": 1.3,
+      "tier": "latam"
+    },
+    {
+      "name": "One Useful Thing (Ethan Mollick)",
+      "url": "https://www.oneusefulthing.org/feed"
+    },
+    {
+      "name": "Allie K. Miller",
+      "url": "https://alliekmiller.substack.com/feed"
+    },
+    {
+      "name": "Paul Graham",
+      "url": "http://www.aaronsw.com/2002/feeds/pgessays.rss"
+    },
+    {
+      "name": "Dwarkesh Patel",
+      "url": "https://www.dwarkeshpatel.com/feed"
+    },
+    {
+      "name": "Gary Marcus",
+      "url": "https://garymarcus.substack.com/feed",
+      "contrarian": true
+    },
+    {
+      "name": "Mitchell Hashimoto",
+      "url": "https://mitchellh.com/feed.xml"
+    }
+  ]
+}
