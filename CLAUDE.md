@@ -26,7 +26,9 @@ mnemos/
 ├── supabase/migrations/   numbered .sql files; run in order on Supabase
 ├── config/discovery.json  trusted voices · creators · queries · RSS · subreddits
 ├── scripts/migrate.ts     prints migrations for paste-into-SQL-editor
-└── .github/workflows/ingest.yml  daily cron
+├── scripts/smoke.ts       28 pure-logic assertions; `npm run smoke`
+├── scripts/embed-smoke.ts proves local embeddings semantically meaningful
+└── cron/ingest.yml.example  daily cron, staged here (token needs workflow scope to install at .github/workflows/)
 ```
 
 ## Conventions
@@ -60,21 +62,31 @@ npm run feed -- search "claude code subagents"
 
 ## Operational notes
 
-- **bird CLI cookies expire ~weekly.** When `[x] error` floods, refresh `BIRD_AUTH_TOKEN` and `BIRD_CT0` and re-run.
-- **Embeddings are ~$0.30/mo** at current volume. Caps come from OpenAI rate limits, not cost.
-- **Supabase free tier = 500 MB.** At 30k articles/mo × ~5 KB row + ~6 KB embedding, expect ~330 MB/mo. Add a retention sweep when it gets tight.
-- **GitHub Actions free tier = 2000 min/mo private repo**, unlimited public. Daily cron uses ~10 min/run = ~300 min/mo. Fine either way.
+- **bird CLI cookies expire ~weekly.** When `[x] error` floods, refresh `BIRD_AUTH_TOKEN` and `BIRD_CT0` from `content-engine/.env` and re-run.
+- **Embeddings cost $0.** Local `Xenova/all-MiniLM-L6-v2` via `@xenova/transformers`. Model downloads ~25 MB on first ingest, cached to `~/.cache/transformers/`. ~50 ms/item on CPU. Vector dim = **384** (not 1536). Schema must match — if you ever swap models, change `vector(384)` in both migrations.
+- **Supabase free tier = 500 MB.** At 30k articles/mo × ~5 KB row + ~1.6 KB embedding (384×4 bytes), expect ~200 MB/mo. Add a retention sweep when it gets tight.
+- **GitHub Actions** free tier = 2000 min/mo private, unlimited public. mnemos is public, so the daily cron is unbounded.
+- **bird CLI** is content-engine's existing X scraper, not a public npm package — the cron workflow installs `bird-cli` globally; verify availability on Actions runner during first cron run.
 
 ## V1.1 work pending
 
-- `src/ingest/entities.ts` — Claude Haiku NER, batched ~50 articles per call, populate `entities` + `entity_mentions`.
-- `src/ingest/temporal.ts` — Detect supersession ("X joined Y" supersedes prior "works at Z") and set `invalid_at`.
+- `src/ingest/entities.ts` — Claude Haiku NER, batched ~50 articles per call, populate `entities` + `entity_mentions`. Use her `ANTHROPIC_API_KEY` from any of `Clawdbot/.env`, `accelerator/speedrun/.env`, `autonomous/redin/marketplace/.env.local`, or `hack/pageforge/.env.local`.
+- `src/ingest/temporal.ts` — Detect supersession ("X joined Y" supersedes prior "works at Z") and set `invalid_at`. This is the Graphiti slide-30 logic from VCN #33 the schema was designed for.
 - `src/retrieval/entities.ts` — `feed timeline <entity>`, `feed cooccur <entity>`.
 - `web/` — Next.js 16 app, Supabase read-only, deploy to Vercel.
 
 ## Style for future PRs
 
-- Smallest correct change. Don't refactor while fixing a bug.
-- New fetchers must round-trip through `--dry-run` before merging.
-- Migrations are append-only. Never edit a numbered file after it's been applied.
-- Type-check on every change: `npm run typecheck`.
+- **Smallest correct change.** Don't refactor while fixing a bug.
+- **New fetchers must round-trip through `--dry-run`** before merging.
+- **Migrations are append-only.** Never edit a numbered file after it's been applied.
+- **Type-check on every change**: `npm run typecheck`.
+- **SQL comments are necessary** for `text`-typed columns that have an implicit enum (e.g. `source`, `tier`); we deliberately chose `text` over Postgres enums for schema evolution flexibility, so comments are the only place valid values live.
+- **One CLAUDE.md fact per finding.** Append to MEMORY.md for living per-session notes; promote stable patterns into this file.
+
+## Auth quirks Claude will hit
+
+- **`gh` CLI**: keyring has TWO accounts (`irivelez` + `irinavelezk`). The active account when this session ended is `irinavelezk`. To push to `irivelez/*` repos, use `gh auth switch --user irivelez` first, then push, then switch back.
+- **`irivelez` keyring token** is classic with `gist, read:org, repo`. **Lacks `workflow` scope** — pushes that touch `.github/workflows/*` fail with `refusing to allow an OAuth App to create or update workflow`. Workaround: stage workflow files at `cron/ingest.yml.example` and document the activation copy step.
+- **`GITHUB_TOKEN` in content-engine/.env** is `irivelez`'s fine-grained PAT, repo-scoped — works for pushes to existing repos but **cannot create new repos**.
+- **`SUPABASE_MANAGEMENT_TOKEN` in `autonomous/redin/marketplace/.env.local`** returns 401 as of this session. Treat as dead unless she refreshes it at https://supabase.com/dashboard/account/tokens.
